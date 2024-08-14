@@ -1,12 +1,33 @@
-// src/pages/Home.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { MapContainer, TileLayer, useMapEvents, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
+import L from 'leaflet';
 import Navbar from '../components/Navbar'; // Importe o componente Navbar
 import Sidebar from '../components/Sidebar'; // Importe o componente Sidebar
 
+// Criação de um ícone personalizado para o marcador do usuário
+const userIcon = new L.Icon({
+  iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41]
+});
+
 export const Home = () => {
   const [markers, setMarkers] = useState([]);
+  const [userLocation, setUserLocation] = useState(null); // Inicializado como null
+
+  // Função para obter a localização do usuário
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        setUserLocation([position.coords.latitude, position.coords.longitude]);
+      }, (error) => {
+        console.error("Erro ao obter localização:", error);
+      });
+    }
+  }, []);
 
   const MapClickHandler = () => {
     useMapEvents({
@@ -40,11 +61,16 @@ export const Home = () => {
           <div className="max-w-full bg-white shadow-md rounded-lg p-6">
             <h2 className="text-2xl font-bold mb-4">Mapa de Propensão ao vento e sol</h2>
             <p className="mb-4">Utilize este mapa para marcar pontos de interesse e identificar o nível de propensão ao vento.</p>
-            <MapContainer className="h-96 w-full" center={[51.505, -0.09]} zoom={13} scrollWheelZoom={false}>
+            <MapContainer className="h-96 w-full" center={userLocation || [51.505, -0.09]} zoom={13} scrollWheelZoom={false}>
               <TileLayer
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               />
               <MapClickHandler />
+              {userLocation && (
+                <Marker position={userLocation} icon={userIcon}>
+                  <Popup>Você está aqui</Popup>
+                </Marker>
+              )}
               {markers.map((marker, idx) => (
                 <Marker key={idx} position={[marker.lat, marker.lng]}>
                   <Popup>{marker.content}</Popup>
@@ -71,6 +97,7 @@ export const Home = () => {
 };
 
 export default Home;
+
 
 
 
