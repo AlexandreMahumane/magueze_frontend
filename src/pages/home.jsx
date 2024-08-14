@@ -61,12 +61,18 @@ export const Home = () => {
     }
   };
 
+  // Função para resetar os marcadores
   const resetMarkers = () => {
     setMarkers([]);
+    if (userLocation) {
+      calculateBestLocations(userLocation[0], userLocation[1]); // Recalcular os melhores locais com a localização do usuário
+    }
   };
 
+  // Função para salvar os marcadores (poderia ser adaptada para salvar em local storage ou back-end)
   const saveMarkers = () => {
-    alert("Alterações salvas!");
+    localStorage.setItem('savedMarkers', JSON.stringify(markers));
+    alert("Marcadores salvos com sucesso!");
   };
 
   return (
@@ -123,6 +129,7 @@ export const Home = () => {
           )}
         </div>
       </div>
+      <Footer />
     </div>
   );
 };
