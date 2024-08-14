@@ -1,5 +1,8 @@
 export const Login = () =>{
     return (<>
-    <h1>Login</h1>
+    <div className="Login">  
+    <img src="" alt="login" /></div>
+    
     </>)
-}
+}  
+
