@@ -4,6 +4,7 @@ import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import Navbar from '../components/Navbar'; // Importe o componente Navbar
 import Sidebar from '../components/Sidebar'; // Importe o componente Sidebar
+import Footer from '../components/Footer'; // Importe o componente Footer
 
 // Criação de um ícone personalizado para o marcador do usuário
 const userIcon = new L.Icon({
@@ -52,7 +53,7 @@ export const Home = () => {
   };
 
   return (
-    <div className="flex h-screen flex-col">
+    <div className="flex flex-col h-screen">
       <Navbar /> {/* Adicione a Navbar aqui */}
       <div className="flex flex-1">
         <Sidebar /> {/* Adicione a Sidebar aqui */}
@@ -92,11 +93,13 @@ export const Home = () => {
           </div>
         </main>
       </div>
+      <Footer /> {/* Adicione o Footer aqui */}
     </div>
   );
 };
 
 export default Home;
+
 
 
 
