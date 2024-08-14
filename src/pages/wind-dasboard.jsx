@@ -1,6 +1,6 @@
 export const WindDasboard = () => {
     return <>
-    <h1>Wind dasboard</h1>
+    <h1>Wind dasboardd</h1>
     </>;
   };
   
