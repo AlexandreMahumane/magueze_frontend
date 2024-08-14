@@ -1,25 +1,63 @@
 // src/pages/Home.jsx
-import React, { useState } from 'react';
-import { MapContainer, TileLayer, useMapEvents, Marker, Popup } from 'react-leaflet';
+import React, { useState, useEffect } from 'react';
+import { MapContainer, TileLayer, Marker, Circle } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
-import Navbar from '../components/Navbar'; // Importe o componente Navbar
-import Sidebar from '../components/Sidebar'; // Importe o componente Sidebar
+import Navbar from '../components/Navbar';
+import Sidebar from '../components/Sidebar';
+import axios from 'axios';
+
+// Substitua pela sua chave de API do OpenWeatherMap
+const WEATHER_API_KEY = 'SUA_CHAVE_DE_API_AQUI';
+
 
 export const Home = () => {
   const [markers, setMarkers] = useState([]);
+  const [userLocation, setUserLocation] = useState(null);
+  const [mapCenter, setMapCenter] = useState([51.505, -0.09]);
+  const [weatherData, setWeatherData] = useState(null);
+  const [cityName, setCityName] = useState('');
 
-  const MapClickHandler = () => {
-    useMapEvents({
-      click(e) {
-        const newMarker = {
-          lat: e.latlng.lat,
-          lng: e.latlng.lng,
-          content: prompt("Insira o nível de propensão ao vento neste ponto:")
-        };
-        setMarkers([...markers, newMarker]);
+  useEffect(() => {
+    // Obtém a localização atual do usuário
+    const getUserLocation = () => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const { latitude, longitude } = position.coords;
+            setUserLocation([latitude, longitude]);
+            setMapCenter([latitude, longitude]); // Define o centro do mapa como a localização do usuário
+            fetchWeatherData(latitude, longitude); // Obtém dados do tempo e da cidade
+          },
+          (error) => {
+            console.error('Erro ao obter a localização:', error);
+            alert('Não foi possível obter sua localização. Verifique se o acesso à localização está habilitado no seu navegador.');
+          }
+        );
+      } else {
+        console.error('Geolocalização não é suportada por este navegador.');
+        alert('Seu navegador não suporta geolocalização.');
       }
-    });
-    return null;
+    };
+
+    getUserLocation();
+  }, []);
+
+  const fetchWeatherData = async (lat, lon) => {
+    try {
+      const response = await axios.get(`https://api.openweathermap.org/data/2.5/weather`, {
+        params: {
+          lat,
+          lon,
+          appid: WEATHER_API_KEY,
+          units: 'metric' // Para obter a temperatura em Celsius
+        }
+      });
+      setWeatherData(response.data);
+      setCityName(response.data.name); // Nome da cidade atual
+    } catch (error) {
+      console.error('Erro ao obter dados meteorológicos:', error);
+      alert('Não foi possível obter os dados meteorológicos.');
+    }
   };
 
   const resetMarkers = () => {
@@ -31,56 +69,60 @@ export const Home = () => {
   };
 
   return (
-    <div className="flex h-screen flex-col">
-      <Navbar /> {/* Adicione a Navbar aqui */}
-      <div className="flex flex-1">
-        <Sidebar /> {/* Adicione a Sidebar aqui */}
-        <main className="flex-1 p-6 bg-gray-100">
-          <h1 className="text-3xl font-bold mb-4">Home</h1>
-          <div className="max-w-full bg-white shadow-md rounded-lg p-6">
-            <h2 className="text-2xl font-bold mb-4">Mapa de Propensão ao vento e sol</h2>
-            <p className="mb-4">Utilize este mapa para marcar pontos de interesse e identificar o nível de propensão ao vento.</p>
-            <MapContainer className="h-96 w-full" center={[51.505, -0.09]} zoom={13} scrollWheelZoom={false}>
+    <div className="flex flex-col h-screen">
+      <Navbar />
+      <div className="flex flex-1 flex-col lg:flex-row">
+        <Sidebar />
+        <main className="flex-1 p-4 lg:p-6 bg-gray-100">
+     
+          <div className="bg-white shadow-md rounded-lg p-4 lg:p-6">
+       
+            <MapContainer className="h-64 w-full lg:h-96" center={mapCenter} zoom={13} scrollWheelZoom={false}>
               <TileLayer
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               />
-              <MapClickHandler />
               {markers.map((marker, idx) => (
-                <Marker key={idx} position={[marker.lat, marker.lng]}>
-                  <Popup>{marker.content}</Popup>
-                </Marker>
+                <Marker key={idx} position={[marker.lat, marker.lng]} />
               ))}
+              {userLocation && (
+                <>
+                  <Marker position={userLocation} />
+                  <Circle center={userLocation} radius={10000} color="blue" fillColor="lightblue" />
+                </>
+              )}
             </MapContainer>
             <div className="flex justify-between mt-4">
-              <button 
-                onClick={saveMarkers} 
+              <button
+                onClick={saveMarkers}
                 className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">
                 Salvar
               </button>
-              <button 
-                onClick={resetMarkers} 
+              <button
+                onClick={resetMarkers}
                 className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600">
                 Resetar
               </button>
             </div>
           </div>
         </main>
+
+        {/* Painel lateral com informações meteorológicas */}
+        <div className="w-full lg:w-80 p-4 lg:p-6 bg-white shadow-md rounded-lg mt-4 lg:mt-0 lg:ml-6">
+          <h2 className="text-xl lg:text-2xl font-bold mb-4">Informações em Tempo Real</h2>
+          {weatherData ? (
+            <div>
+              <p><strong>Cidade:</strong> {cityName}</p>
+              <p><strong>Temperatura:</strong> {weatherData.main.temp} °C</p>
+              <p><strong>Velocidade do Vento:</strong> {weatherData.wind.speed} m/s</p>
+              <p><strong>Direção do Vento:</strong> {weatherData.wind.deg}°</p>
+            </div>
+          ) : (
+            <p>Carregando dados meteorológicos...</p>
+          )}
+        </div>
       </div>
     </div>
   );
 };
 
 export default Home;
-
-
-
-
-
-
-
-
-
-
-
-
-
