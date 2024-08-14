@@ -6,6 +6,7 @@ import Navbar from '../components/Navbar';
 import Sidebar from '../components/Sidebar';
 import RenewableEnergyHistory from '../components/historico';
 import axios from 'axios';
+import { Footer } from '../components/footer';
 
 // Substitua pela sua chave de API do OpenWeatherMap
 const WEATHER_API_KEY = '62ccc6d38b83b059f17e9ac05169f70b';

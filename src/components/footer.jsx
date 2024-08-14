@@ -1,7 +1,7 @@
 // src/components/Footer.jsx
 import React from 'react';
 
-const Footer = () => {
+export const Footer = () => {
   return (
     <footer className="bg-gray-800 text-white py-10">
       <div className="container mx-auto px-6 md:px-12">
@@ -57,6 +57,6 @@ const Footer = () => {
   );
 };
 
-export default Footer;
+
 
 

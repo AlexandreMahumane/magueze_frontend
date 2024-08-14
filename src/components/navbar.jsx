@@ -14,7 +14,7 @@ const Navbar = () => {
         {/* Navbar Links */}
         <div className="hidden md:flex space-x-4">
           <Link to="/" className="hover:bg-gray-700 px-3 py-2 rounded">Home</Link>
-          <Link to="/map" className="hover:bg-gray-700 px-3 py-2 rounded">Mapa</Link>
+          <Link to="/historic" className="hover:bg-gray-700 px-3 py-2 rounded">Historic</Link>
           <Link to="/contact" className="hover:bg-gray-700 px-3 py-2 rounded">Contato</Link>
           <Link to="/about" className="hover:bg-gray-700 px-3 py-2 rounded">Sobre</Link>
         </div>
