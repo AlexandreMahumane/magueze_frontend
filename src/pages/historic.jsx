@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import Navbar from '../components/Navbar';
+import { Header } from '../components/header';
+import { Footer } from '../components/footer';
+
 
 const determineBestPosition = (weatherData) => {
   const positionAltitudeMap = {};
@@ -111,7 +113,7 @@ export const Historic = () => {
 
   return (
     <>
-    <Navbar/>
+    <Header/>
     <div className="container mx-auto p-6">
         <div className="bg-gray-50 rounded-lg shadow-md p-6 mb-6">
           <h2 className="text-2xl font-bold mb-2 text-gray-800">Histórico de Dados Meteorológicos</h2>
@@ -141,7 +143,9 @@ export const Historic = () => {
           </table>
         </div>
   
-    </div></>
+    </div>
+    <Footer/>
+    </>
   );
 };
 

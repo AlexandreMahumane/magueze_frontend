@@ -2,10 +2,12 @@
 import React, { useState, useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, Circle } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
-import Navbar from '../components/Navbar';
+
 import Sidebar from '../components/Sidebar';
 import axios from 'axios';
 import { Footer } from '../components/footer';
+import { Header } from '../components/header';
+
 
 // Substitua pela sua chave de API do OpenWeatherMap
 const WEATHER_API_KEY = '62ccc6d38b83b059f17e9ac05169f70b';
@@ -77,7 +79,7 @@ export const Home = () => {
 
   return (
     <div className="flex flex-col h-screen">
-      <Navbar />
+      <Header />
       <div className="flex flex-1 flex-col lg:flex-row">
         <Sidebar />
         <main className="flex-1 p-4 lg:p-6 bg-gray-100">
