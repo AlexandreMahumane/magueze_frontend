@@ -1,4 +1,4 @@
-import"../back.css"
+
 export const Signup = () => {
     return (
       <div className="relative w-full h-screen bg-cover bg-center" style={{ backgroundImage: 'url("src/assets/signup.png")' }}>
