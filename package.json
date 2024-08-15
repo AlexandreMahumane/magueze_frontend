@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --port 3004",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview"
@@ -20,6 +20,7 @@
     "react-geocode": "^1.0.0-alpha.1",
     "react-leaflet": "^4.2.1",
     "react-router-dom": "^6.26.0",
+    "react-toastify": "^10.0.5",
     "suncalc": "^1.9.0"
   },
   "devDependencies": {
