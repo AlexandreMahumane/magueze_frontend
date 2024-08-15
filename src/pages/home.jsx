@@ -4,7 +4,6 @@ import { MapContainer, TileLayer, Marker, Circle } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import Navbar from '../components/Navbar';
 import Sidebar from '../components/Sidebar';
-import RenewableEnergyHistory from '../components/historico';
 import axios from 'axios';
 import { Footer } from '../components/footer';
 
@@ -79,7 +78,6 @@ export const Home = () => {
   return (
     <div className="flex flex-col h-screen">
       <Navbar />
-      <RenewableEnergyHistory/>
       <div className="flex flex-1 flex-col lg:flex-row">
         <Sidebar />
         <main className="flex-1 p-4 lg:p-6 bg-gray-100">
