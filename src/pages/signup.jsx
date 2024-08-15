@@ -1,7 +1,7 @@
-
+import"../back.css"
 export const Signup = () => {
     return (
-      <div className="relative w-full h-screen bg-cover bg-center">
+      <div className="relative w-full h-screen bg-cover bg-center" style={{ backgroundImage: 'url("src/assets/signup.png")' }}>
         <div className="absolute inset-0 flex items-center justify-center">
           <form className="bg-white p-8 rounded-lg shadow-lg w-1/2">
             <div className="mb-4">
